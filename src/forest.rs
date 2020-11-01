@@ -8,6 +8,39 @@ use amethyst::{
     renderer::{Camera, ImageFormat, SpriteRender, SpriteSheet, SpriteSheetFormat, Texture},
 };
 
+// ACTION
+
+#[derive(PartialEq, Eq)]
+pub enum Action{
+    Idle
+}
+
+pub struct ActionStatus{
+    pub action_type: Action,
+}
+
+impl ActionStatus{
+    pub fn set_action_type(&mut self, action: Action){
+        self.action_type = action;
+    }
+}
+
+impl Component for ActionStatus {
+    type Storage = DenseVecStorage<Self>;
+}
+
+// Animations
+
+pub struct Animation {
+    pub frames: i32,
+    pub frame_duration: u64,
+    pub first_sprite_index: usize,
+}
+
+impl Component for Animation{
+    type Storage = DenseVecStorage<Self>;
+}
+
 // HERO SECTION
 
 pub const HERO_WIDTH: f32 = 64.0;
@@ -40,12 +73,25 @@ fn initialise_hero(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>){
     let y = ARENA_HEIGHT / 2.0;
     hero_transform.set_translation_xyz(ARENA_WIDTH, y, 0.0);
 
-    let sprite_render = SpriteRender::new(sprite_sheet_handle, 0); 
+    let animation = Animation{
+        frames: 9,
+        frame_duration: 10,
+        first_sprite_index: 0,
+    };
+
+    let action_status = ActionStatus{
+        action_type: Action::Idle
+    };
+    let sprite_render  = SpriteRender{
+        sprite_sheet: sprite_sheet_handle,
+        sprite_number: animation.first_sprite_index,
+    };
 
     world
         .create_entity()
-        .with(sprite_render.clone())
-        .with(Hero::new())
+        .with(sprite_render)
+        .with(animation)
+        .with(action_status)
         .with(hero_transform)
         .build();
 }
@@ -90,7 +136,11 @@ fn initialise_camera(world: &mut World){
 
 pub const ARENA_HEIGHT: f32 = 500.0;
 pub const ARENA_WIDTH: f32 = 500.0;
-pub struct Forest;
+
+#[derive(Default)]
+pub struct Forest{
+    sprite_sheet_handle: Option<Handle<SpriteSheet>>,
+}
 
 impl SimpleState for Forest {
 

@@ -1,10 +1,10 @@
-** Launch the game
+# Launch the game
 
 ```rust
 cargo run
 ```
 
-** Sprites
+## Sprites
 
 - Warrior : https://helianthus-games.itch.io/axe-warrior
 - Background : https://ansimuz.itch.io/sunnyland-forest

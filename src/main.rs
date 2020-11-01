@@ -11,7 +11,7 @@ use amethyst::{
     utils::application_root_dir,
 };
 
-//
+mod animation;
 mod forest;
 use crate::forest::Forest;
 
@@ -37,9 +37,10 @@ fn main() -> amethyst::Result<()> {
             )
             //plugin to render sprite
             .with_plugin(RenderFlat2D::default()),
-    )?;
+    )?
+    .with(animation::AnimationSystem, "animation_system", &[]);
 
-    let mut game = Application::new(asset_dir, Forest, game_data)?;
+    let mut game = Application::new(asset_dir, Forest::default(), game_data)?;
     game.run();
     Ok(())
 }
