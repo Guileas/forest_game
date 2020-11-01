@@ -9,3 +9,14 @@ cargo run
 - Warrior : https://helianthus-games.itch.io/axe-warrior
 - Background : https://ansimuz.itch.io/sunnyland-forest
 - Monster : https://sanctumpixel.itch.io/sword-skeleton-pixel-art-character
+
+## Folders
+
+- Assets : contains all sprite or spritesheet needed for the game
+- Config : contain all game configuration
+- Src : main folder of the game
+- Systems : logic generic of the game (basic movement, animation, etc.)
+
+## Config files
+
+- Cargo.toml : manage dependencies (similar to package.json)

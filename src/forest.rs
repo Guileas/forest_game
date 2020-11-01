@@ -98,6 +98,7 @@ fn initialise_hero(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>){
 
 // HERO SPRITE
 fn load_hero_sprite_sheet(world: &mut World) -> Handle<SpriteSheet>{
+    // Load hero spritesheet
     let texture_handle = {
         let loader = world.read_resource::<Loader>();
         let texture_storage = world.read_resource::<AssetStorage<Texture>>();
@@ -107,8 +108,8 @@ fn load_hero_sprite_sheet(world: &mut World) -> Handle<SpriteSheet>{
             (),
             &texture_storage,
         )
-
     };
+    //Load hero ron spritesheet definition
     let loader = world.read_resource::<Loader>();
     let sprite_sheet_store = world.read_resource::<AssetStorage<SpriteSheet>>();
     loader.load(
