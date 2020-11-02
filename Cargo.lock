@@ -1305,6 +1305,8 @@ name = "forest_2d_try"
 version = "0.1.0"
 dependencies = [
  "amethyst",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

@@ -9,11 +9,17 @@ use amethyst::{
         RenderingBundle,
     },
     utils::application_root_dir,
+    window::DisplayConfig,
 };
+use std::path::Path;
 
 mod animation;
+mod components;
 mod forest;
-use crate::forest::Forest;
+
+use crate::{forest::Forest};
+
+//use crate::forest::Forest;
 
 fn main() -> amethyst::Result<()> {
     //log error and warning
@@ -25,22 +31,23 @@ fn main() -> amethyst::Result<()> {
 
     //get game param from config .ron file
     let display_config_path = app_root.join("config").join("display.ron");
+
     let game_data = GameDataBuilder::default()
-    // Handles tracking entity positions
-    .with_bundle(TransformBundle::new())?
-    .with_bundle(
-        RenderingBundle::<DefaultBackend>::new()
-            //plugin to open window
-            .with_plugin(
-                RenderToWindow::from_config_path(display_config_path)?
-                    //define window background color
-                    .with_clear([0.0,0.0,0.0,1.0]),
-            )
-            //plugin to render sprite
-            .with_plugin(RenderFlat2D::default()),
-    )?
-    // call the animation system for hero animation
-    .with(animation::AnimationSystem, "animation_system", &[]);
+        // Handles tracking entity positions
+        .with_bundle(TransformBundle::new())?
+        .with_bundle(
+            RenderingBundle::<DefaultBackend>::new()
+                //plugin to open window
+                .with_plugin(
+                    RenderToWindow::from_config_path(display_config_path)?
+                        //define window background color
+                        .with_clear([0.0, 0.0, 0.0, 1.0]),
+                )
+                //plugin to render sprite
+                .with_plugin(RenderFlat2D::default()),
+        )?
+        // call the animation system for hero animation
+        .with(animation::AnimationSystem, "animation_system", &[]);
 
     let mut game = Application::new(asset_dir, Forest::default(), game_data)?;
     game.run();
