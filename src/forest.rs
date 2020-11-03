@@ -10,6 +10,7 @@ use amethyst::{
 
 use crate::{
     components::{ArenaConfig},
+    entities::{initialize_camera}
 };
 
 // ACTION
@@ -126,19 +127,6 @@ fn load_hero_sprite_sheet(world: &mut World) -> Handle<SpriteSheet> {
     )
 }
 
-// CAMERA
-
-fn initialise_camera(world: &mut World) {
-    
-    let mut transform = Transform::default();
-    transform.set_translation_xyz(ArenaConfig::default().width * 0.9, ArenaConfig::default().height * 0.7, 1.0);
-
-    world
-        .create_entity()
-        .with(Camera::standard_2d(ArenaConfig::default().width, ArenaConfig::default().height))
-        .with(transform)
-        .build();
-}
 
 // WORLD SECTION
 #[derive(Default)]
@@ -157,6 +145,6 @@ impl SimpleState for Forest {
         world.register::<Hero>();
         world.insert(arena);
         initialise_hero(world, sprite_sheet_handle);
-        initialise_camera(world);
+        initialize_camera(world);
     }
 }

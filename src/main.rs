@@ -15,6 +15,7 @@ use std::path::Path;
 
 mod animation;
 mod components;
+mod entities;
 mod forest;
 
 use crate::{forest::Forest};
