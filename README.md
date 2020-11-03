@@ -1,6 +1,7 @@
 # History
 
-This game came in my head when listening to Hugo Kant album name ["Far from home"] (https://www.youtube.com/watch?v=2_aRBPJekjw&t=3048s&ab_channel=SevenBeatsMusic "Hugo Kant - Far From Home") hope you will enjoyed it as much as I do!
+This game came in my head when listening to Hugo Kant album name [Far From Home](https://www.youtube.com/watch?v=2_aRBPJekjw&t=3048s&ab_channel=SevenBeatsMusic "Hugo Kant - Far From Home")
+ hope you will enjoyed it as much as I do!
 
 # Why Rust?
 
