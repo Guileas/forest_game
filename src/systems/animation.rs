@@ -4,7 +4,9 @@ use amethyst::{
     renderer::{SpriteRender},
 };
 
-use crate::forest::{Animation, ActionStatus,Action};
+use crate::{
+    components::{Animation, ActionStatus, Action},
+};
 
 pub struct AnimationSystem;
 
