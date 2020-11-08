@@ -27,7 +27,7 @@ cargo run
 
 # Features
 
-- [ ] Change the basic file configuration to use entity/component
+- [x] Change the basic file configuration to use entity/component
 - [ ] Finish animation system for hero
 - [ ] Create animation system for monster
 - [ ] Create life point system
