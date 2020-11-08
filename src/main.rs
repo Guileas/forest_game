@@ -9,16 +9,17 @@ use amethyst::{
         RenderingBundle,
     },
     utils::application_root_dir,
-    window::DisplayConfig,
 };
-use std::path::Path;
 
-mod animation;
+mod systems;
 mod components;
 mod entities;
 mod forest;
 
-use crate::{forest::Forest};
+use crate::{
+    forest::Forest,
+    systems::{AnimationSystem}
+};
 
 //use crate::forest::Forest;
 
@@ -48,7 +49,7 @@ fn main() -> amethyst::Result<()> {
                 .with_plugin(RenderFlat2D::default()),
         )?
         // call the animation system for hero animation
-        .with(animation::AnimationSystem, "animation_system", &[]);
+        .with(AnimationSystem, "animation_system", &[]);
 
     let mut game = Application::new(asset_dir, Forest::default(), game_data)?;
     game.run();

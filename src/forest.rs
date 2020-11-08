@@ -1,137 +1,21 @@
 extern crate amethyst;
 
 use amethyst::{
-    assets::{AssetStorage, Handle, Loader},
-    core::transform::Transform,
-    ecs::{Component, DenseVecStorage},
+    assets::{ProgressCounter, RonFormat, PrefabLoader, Handle, Prefab},
     prelude::*,
-    renderer::{Camera, ImageFormat, SpriteRender, SpriteSheet, SpriteSheetFormat, Texture},
+    renderer::{SpriteSheet},
 };
 
 use crate::{
-    components::{ArenaConfig},
-    entities::{initialize_camera}
+    components::{ArenaConfig, Hero, AnimationPrefabData},
+    entities::{initialize_camera, initialize_hero, load_hero_sprite_sheet}
 };
 
-// ACTION
 
-#[derive(PartialEq, Eq)]
-pub enum Action {
-    Idle,
-}
-
-pub struct ActionStatus {
-    pub action_type: Action,
-}
-
-impl ActionStatus {
-    pub fn set_action_type(&mut self, action: Action) {
-        self.action_type = action;
-    }
-}
-
-impl Component for ActionStatus {
-    type Storage = DenseVecStorage<Self>;
-}
-
-// Animations
-
-pub struct Animation {
-    pub frames: i32,
-    pub frame_duration: u64,
-    pub first_sprite_index: usize,
-}
-
-impl Component for Animation {
-    type Storage = DenseVecStorage<Self>;
-}
-
-// HERO SECTION
-
-pub const HERO_WIDTH: f32 = 64.0;
-pub const HERO_HEIGHT: f32 = 64.0;
-
-pub struct Hero {
-    pub width: f32,
-    pub height: f32,
-}
-
-impl Hero {
-    fn new() -> Hero {
-        Hero {
-            width: HERO_WIDTH,
-            height: HERO_HEIGHT,
-        }
-    }
-}
-
-impl Component for Hero {
-    type Storage = DenseVecStorage<Self>;
-}
-
-
-// INIT HERO
-
-fn initialise_hero(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>) {
-
-    
-
-    let mut hero_transform = Transform::default();
-    let y = ArenaConfig::default().height / 2.0;
-    hero_transform.set_translation_xyz(ArenaConfig::default().width, y, 0.0);
-
-    let animation = Animation {
-        frames: 9,
-        frame_duration: 10,
-        first_sprite_index: 0,
-    };
-
-    let action_status = ActionStatus {
-        action_type: Action::Idle,
-    };
-    let sprite_render = SpriteRender {
-        sprite_sheet: sprite_sheet_handle,
-        sprite_number: animation.first_sprite_index,
-    };
-
-    world
-        .create_entity()
-        .with(sprite_render)
-        .with(animation)
-        .with(action_status)
-        .with(hero_transform)
-        .build();
-}
-
-// HERO SPRITE
-fn load_hero_sprite_sheet(world: &mut World) -> Handle<SpriteSheet> {
-    // Load hero spritesheet
-    let texture_handle = {
-        let loader = world.read_resource::<Loader>();
-        let texture_storage = world.read_resource::<AssetStorage<Texture>>();
-        loader.load(
-            "AxeWarrior/Idle/idle.png",
-            ImageFormat::default(),
-            (),
-            &texture_storage,
-        )
-    };
-    //Load hero ron spritesheet definition
-    let loader = world.read_resource::<Loader>();
-    let sprite_sheet_store = world.read_resource::<AssetStorage<SpriteSheet>>();
-    loader.load(
-        "AxeWarrior/Idle/hero_spritesheet.ron",
-        SpriteSheetFormat(texture_handle),
-        (),
-        &sprite_sheet_store,
-    )
-}
-
-
-// WORLD SECTION
 #[derive(Default)]
 pub struct Forest {
-    sprite_sheet_handle: Option<Handle<SpriteSheet>>,
+    progress_counter: ProgressCounter,
+    prefab_handle: Option<Handle<Prefab<AnimationPrefabData>>>,
 }
 
 impl SimpleState for Forest {
@@ -139,12 +23,51 @@ impl SimpleState for Forest {
 
         let world = data.world;
         //load the spritesheet
-        let sprite_sheet_handle = load_hero_sprite_sheet(world);
+        let mut progress_counter = ProgressCounter::new();
+        
         let arena = ArenaConfig::default();
-
-        world.register::<Hero>();
         world.insert(arena);
-        initialise_hero(world, sprite_sheet_handle);
         initialize_camera(world);
+
+        //let prefab_handle = Some(load_hero_sprite_sheet(world, progress_counter));
+
+        let prefab_handle = world.exec(|loader: PrefabLoader<'_, AnimationPrefabData>| {
+
+            loader.load(
+                "AxeWarrior/Idle/hero_spritesheet.ron", 
+                RonFormat, 
+                (),
+            )
+            
+        });
+        world.register::<Hero>();
+        world.create_entity().with(prefab_handle).build();
+        
+        
+    }
+
+    fn update(&mut self, data: &mut StateData<GameData>) -> SimpleTrans {
+        data.data.update(&data.world);
+        /*if let Some(ref counter) = self.progress_counter.as_ref() {
+            println!(
+                "Loading: {}, Failed: {}, Finished: {}",
+                counter.num_loading(),
+                counter.num_failed(),
+                counter.num_finished()
+            );*/
+            if self.progress_counter.is_complete() {
+                println!(
+                    "Complete"
+                );
+                /*let hero_prefab_handle = data.world.read_resource::<Handle<Prefab<AnimationPrefabData>>>();
+                
+                
+                hero_prefab_handle.clone();*/
+                //initialize_hero(data.world);
+                
+            }
+        //}
+
+        Trans::None
     }
 }

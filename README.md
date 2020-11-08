@@ -25,9 +25,13 @@ cargo run
         -- Author: sanctumpixel
         -- Licence: CC-BY-ND
 
+# Audio
+
+- Highly recommend song for playing this game : [Hugo Kant - Far From Home](https://www.youtube.com/watch?v=2_aRBPJekjw&t=3048s&ab_channel=SevenBeatsMusic "Hugo Kant - Far From Home")
+
 # Features
 
-- [ ] Change the basic file configuration to use entity/component
+- [x] Change the basic file configuration to use entity/component
 - [ ] Finish animation system for hero
 - [ ] Create animation system for monster
 - [ ] Create life point system
@@ -41,6 +45,7 @@ cargo run
 # Folders
 
 - Assets : contains all sprite or spritesheet needed for the game
+        - prefab
 - Config : contain all game configuration
 - Src : main folder of the game
     - components : contain the definition of a game object (similar to model)
@@ -50,7 +55,10 @@ cargo run
 
 - Cargo.toml : manage dependencies (similar to package.json)
 
-# Audio
 
-- Highly recommend song for playing this game : [Hugo Kant - Far From Home](https://www.youtube.com/watch?v=2_aRBPJekjw&t=3048s&ab_channel=SevenBeatsMusic "Hugo Kant - Far From Home")
+# Note
 
+## Comment 
+
+```TODO : ``` : Change to  make in the future
+```!!! : ``` : Must be remember

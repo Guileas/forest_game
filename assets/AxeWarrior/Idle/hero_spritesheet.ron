@@ -1,60 +1,130 @@
-List((
-    texture_width: 549,
-    texture_height: 63,
-    sprites: [
-        (
-            x: 0,
-            y: 0,
-            width: 61,
-            height: 63,
+#![enable(implicit_some)]
+Prefab(
+    entities: [
+        // Note: You can define as many Prefab entity as you need in the same file
+        // Player
+        PrefabEntity(
+            data: AnimationPrefabData(
+                //SpriteScenePrefab
+                sprite_scene: (
+                    //SpriteSheePrefab with index 0
+                    sheet: Sheet(
+                        //TexturePrefab
+                        texture: File("idle.png", (
+                            "IMAGE", (
+                                sampler_info: (
+                                    min_filter: Nearest,
+                                    mag_filter: Nearest,
+                                    mip_filter: Nearest,
+                                    wrap_mode: (Tile, Tile, Tile),
+                                    lod_bias: (0),
+                                    lod_range: (
+                                        start: ( 0 ),
+                                        end: ( 8000 ),
+                                    ),
+                                    comparison: None,
+                                    border: (0),
+                                    anisotropic: Off,
+                                    normalized: true,
+                                ),
+                            ),
+                        )),
+                        sprites: [
+                            List((
+                                texture_width: 549,
+                                texture_height: 63,
+                                sprites: [
+                                    (
+                                        x: 0,
+                                        y: 0,
+                                        width: 61,
+                                        height: 63,
+                                    ),
+                                    (
+                                        x: 61,
+                                        y: 63,
+                                        width: 61,
+                                        height: 63,
+                                    ),
+                                    (
+                                        x: 122,
+                                        y: 126,
+                                        width: 61,
+                                        height: 63,
+                                    ),
+                                    (
+                                        x: 183,
+                                        y: 189,
+                                        width: 61,
+                                        height: 63,
+                                    ),
+                                    (
+                                        x: 244,
+                                        y: 252,
+                                        width: 61,
+                                        height: 63,
+                                    ),
+                                    (
+                                        x: 305,
+                                        y: 315,
+                                        width: 61,
+                                        height: 63,
+                                    ),
+                                    (
+                                        x: 366,
+                                        y: 378,
+                                        width: 61,
+                                        height: 63,
+                                    ),
+                                    (
+                                        x: 427,
+                                        y: 441,
+                                        width: 61,
+                                        height: 63,
+                                    ),
+                                    (
+                                        x: 488,
+                                        y: 504,
+                                        width: 61,
+                                        height: 63,
+                                    )
+                                ],
+                            ))
+                        ]
+                        //Optional
+                        name: "hero"
+                    ),
+                    // SpriteRenderPrefab
+                    render: (
+                        sheet: "hero",
+                        sprite_number: 0,
+                    ),
+                ),
+                //AnimationSetPrefab
+                animation_set: (
+                    animations: [
+                        (
+                            //AnimationId
+                            Idle,
+                            (
+                                samplers: [
+                                    0,
+                                    //Only SpriteIndex channel allowed for SpriteRender in AnimationSetPrefab
+                                    SpriteIndex,
+                                    (
+                                        //Time of key frames
+                                        input: [0.0,0.1, 0.2, 0.3,0.4,0.5,0.6,0.7,0.8],
+                                        // Sprite indexes from SpriteSheet for key frames
+                                        output: [0,1,2,3,4,5,6,7,8],
+                                        //Sprites can only ever be animated with Step
+                                        function: Step,
+                                    ),
+                                ],
+                            ),
+                        ),
+                    ],
+                ),
+            ),
         ),
-        (
-            x: 61,
-            y: 63,
-            width: 61,
-            height: 63,
-        ),
-        (
-            x: 122,
-            y: 126,
-            width: 61,
-            height: 63,
-        ),
-        (
-            x: 183,
-            y: 189,
-            width: 61,
-            height: 63,
-        ),
-        (
-            x: 244,
-            y: 252,
-            width: 61,
-            height: 63,
-        ),
-        (
-            x: 305,
-            y: 315,
-            width: 61,
-            height: 63,
-        ),
-        (
-            x: 366,
-            y: 378,
-            width: 61,
-            height: 63,
-        ),
-        (
-            x: 427,
-            y: 441,
-            width: 61,
-            height: 63,
-        ),
-        (
-            x: 488,
-            y: 504,
-            width: 61,
-            height: 63,
-        )
     ],
-))
+)
